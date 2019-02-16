@@ -44,6 +44,7 @@ public class SensorAdapter implements SensorEventListener, LocationListener {
     private float[] orientationValues   = new float[3];
     private float[] magneticValues      = new float[3];
     private float[] accelerometerValues = new float[3];
+    private float[] gravityValues       = new float[3];
     private float[] gyroscopeValues     = new float[3];
     /* betweenDistanceの戻り値 */
     float[] results = new float[3];
@@ -55,7 +56,8 @@ public class SensorAdapter implements SensorEventListener, LocationListener {
     private Logger postureLogger, gpsLogger, allLogger;
 
     Configuration config;
-
+    final float alpha = 0.8f;
+    boolean flag =true;
 
     //アダプタのプロパティ
     public int getYaw(){
@@ -98,7 +100,7 @@ public class SensorAdapter implements SensorEventListener, LocationListener {
 
     // TODO: タブレットマウントのYaw方向のニュートラルを入力
     // TODO: 左側面につけるのであれば-●●で記入(degで記入)
-    double Yawdeg = -6.5;
+    double Yawdeg = 0;
     float Yawneu=(float) Math.toRadians(Yawdeg);
 
     public void setPitchneutral(float pitchneu) {
@@ -187,7 +189,16 @@ public class SensorAdapter implements SensorEventListener, LocationListener {
                 magneticValues = event.values.clone();
                 break;
             case Sensor.TYPE_ACCELEROMETER:
-                accelerometerValues = event.values.clone();
+                if(flag == true){
+                    gravityValues = event.values.clone();
+                    accelerometerValues = gravityValues;
+                    flag = false;
+                }else {
+                    gravityValues[0] = alpha * gravityValues[0] + (1 - alpha) * event.values[0];
+                    gravityValues[1] = alpha * gravityValues[1] + (1 - alpha) * event.values[1];
+                    gravityValues[2] = alpha * gravityValues[2] + (1 - alpha) * event.values[2];
+                    accelerometerValues = gravityValues;
+                }
                 break;
             case Sensor.TYPE_GYROSCOPE:
                 gyroscopeValues = event.values.clone();
