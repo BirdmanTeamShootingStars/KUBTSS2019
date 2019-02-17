@@ -56,7 +56,7 @@ public class SensorAdapter implements SensorEventListener, LocationListener {
     private Logger postureLogger, gpsLogger, allLogger;
 
     Configuration config;
-    final float alpha = 0.8f;
+    final float alpha = 0.9f;
     boolean flag =true;
 
     //アダプタのプロパティ
