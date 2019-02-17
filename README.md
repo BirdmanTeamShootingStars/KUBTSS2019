@@ -1,3 +1,3 @@
-# KUBTSS2018
+# KUBTSS2019
 
-2017年度のandroidのプログラムです
+2019年度のandroidのプログラムです
