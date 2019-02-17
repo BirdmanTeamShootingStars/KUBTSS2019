@@ -194,6 +194,7 @@ public class SensorAdapter implements SensorEventListener, LocationListener {
                     accelerometerValues = gravityValues;
                     flag = false;
                 }else {
+                    //重力加速度のみを取り出す
                     gravityValues[0] = alpha * gravityValues[0] + (1 - alpha) * event.values[0];
                     gravityValues[1] = alpha * gravityValues[1] + (1 - alpha) * event.values[1];
                     gravityValues[2] = alpha * gravityValues[2] + (1 - alpha) * event.values[2];
