@@ -22,7 +22,7 @@
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="400dp">
+            android:layout_height="360dp">
 
 
             <fragment
@@ -165,6 +165,13 @@
                     sample:x0="50"
                     sample:y0="100"></com.example.hongu.apaapa.GraphView>
 
+                <Button
+                    android:id="@+id/startbtn"
+                    android:layout_width="120dp"
+                    android:layout_height="60dp"
+                    android:text="Start"
+                    android:textSize="30dp" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -187,6 +194,13 @@
                     sample:vmin="0"
                     sample:x0="50"
                     sample:y0="100"></com.example.hongu.apaapa.GraphView>
+
+                <NumberPicker
+                    android:id="@+id/numberPicker"
+                    android:layout_width="100dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:textSize="80dp" />
             </LinearLayout>
 
         </LinearLayout>
@@ -225,20 +239,6 @@
             android:layout_height="60dp"
             android:layout_marginTop="527dp"
             android:baselineAligned="false">
-
-            <Button
-                android:id="@+id/startbtn"
-                android:layout_width="180dp"
-                android:layout_height="match_parent"
-                android:text="Start"
-                android:textSize="30dp" />
-
-            <NumberPicker
-                android:id="@+id/numberPicker"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:textSize="80dp" />
 
 
         </LinearLayout>
