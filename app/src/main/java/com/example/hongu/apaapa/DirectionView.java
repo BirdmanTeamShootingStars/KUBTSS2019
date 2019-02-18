@@ -43,7 +43,7 @@ public class DirectionView extends View {
         canvas.save();
         canvas.translate(40,40);
         canvas.scale(1.3f, 1.3f);
-        canvas.rotate(-Yaw);
+        canvas.rotate(-Yaw,40,50);
         canvas.drawBitmap(dir, -40, -40, paint);
         canvas.restore();
     }
