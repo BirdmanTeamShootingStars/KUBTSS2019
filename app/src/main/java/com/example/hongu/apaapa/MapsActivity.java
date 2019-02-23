@@ -172,6 +172,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private float[] fAccell = null;
     private float[] fMagnetic = null;
 
+    double[][] vertex = new double[][]{{35.027171, 135.776975}, {35.026921, 135.778853}};//飛行禁止区域の頂点
+    int vertexes_ = 2;
+    double a;
+    double b;
+    double c;
+    double height;
+
     //SubThreadSample[] subThreadSample = new SubThreadSample[50];
 
     @Override
@@ -902,9 +909,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onLocationChanged(Location location) {
         float[] dista = new float[3];
-        float a;//三角形の斜辺その1
-        float b;//三角形の斜辺その2
-        float c;//三角形の底辺
+
         // Stop後は動かさない
         if (mStop) {
             return;
@@ -973,8 +978,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         }
         //飛行禁止区域侵入時の警告音
-        //Location.distanceBetween(,, latlng.latitude, latlng.longitude, dista);
-            soundPool.play(sound,1.0F, 1.0F, 0, -1, 1.0F);
+        for(int v = 2; v <= vertexes_; v++) {
+            Location.distanceBetween(vertex[v - 2][v - 2], vertex[v - 2][v - 1], latlng.latitude, latlng.longitude, dista);
+            a = dista[0];
+            Location.distanceBetween(vertex[v - 1][v - 2], vertex[v - 1][v - 1], latlng.latitude, latlng.longitude, dista);
+            b = dista[0];
+            Location.distanceBetween(vertex[v - 2][v - 2], vertex[v - 2][v - 1], vertex[v - 1][v - 2], vertex[v - 1][v - 1], dista);
+            c = dista[0];
+            height = 2 * Math.sqrt((a + b + c) * (a + b - c) * (a + c - b) * (b + c - a) / 16) / c;//ヘロンの公式
+
+            if (height <= 5) {
+                soundPool.play(sound, 1.0F, 1.0F, 0, -1, 1.0F);
+            }
+        }
     }
 
     private void drawTrace(LatLng latlng) {
