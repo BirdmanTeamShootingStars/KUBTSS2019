@@ -40,6 +40,9 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
+import android.media.AudioAttributes;
+import android.media.AudioManager;
+import android.media.SoundPool;
 
 //import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.common.ConnectionResult;
@@ -147,6 +150,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     MarkerOptions options = new MarkerOptions();
 
+    SoundPool soundPool;
+    int sound;
 
     double roll,switching,yaw,pitch,ultsonic;
 
@@ -166,8 +171,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private float[] fAccell = null;
     private float[] fMagnetic = null;
-
-    Alert alert1 = new Alert();
 
     //SubThreadSample[] subThreadSample = new SubThreadSample[50];
 
@@ -241,7 +244,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         disText.setTextColor(Color.RED);
         straightText.setTextColor(Color.RED);
         // NumberPicker 設定
-        final NumberPicker numberPicker = (NumberPicker)findViewById(R.id.numberPicker);
+        final NumberPicker numberPicker = (NumberPicker) findViewById(R.id.numberPicker);
         numberPicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
 
 // 最大、最小を設定
@@ -261,19 +264,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .build();
 
 
-
         if (Build.VERSION.SDK_INT >= 19) {
             Log.i(TAG, "getExternalFilesDirを呼び出します");
             File[] extDirs = getExternalFilesDirs(Environment.DIRECTORY_DOWNLOADS);
             File extSdDir = extDirs[extDirs.length - 1];
             Logger.setExternalDir(extSdDir);
             Log.i(TAG, "getExternalFilesDirが返すパス: " + extSdDir.getAbsolutePath());
-        }else{
+        } else {
             Log.e(TAG, "This SDK version is under 18.");
             finish();
         }
 
-       mReceivedDataAdapter = new ReceivedDataAdapter(getBaseContext());
+        mReceivedDataAdapter = new ReceivedDataAdapter(getBaseContext());
 
         //mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         LocationManager mLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
@@ -297,10 +299,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             url = "http://yukiku.php.xdomain.jp/controller.php";
             mCloudLoggerService = new CloudLoggerService(url);
         }
-        mCloudLoggerAdapter = new CloudLoggerAdapter(mSensorAdapter,mReceivedDataAdapter,mCloudLoggerService);
+        mCloudLoggerAdapter = new CloudLoggerAdapter(mSensorAdapter, mReceivedDataAdapter, mCloudLoggerService);
         mCloudLoggerSendThread = new CloudLoggerSendThread(mCloudLoggerService);
         mCloudLoggerSendThread.start();
-
 
 
         //   subThreadSample[0] = new SubThreadSample("a", 100, 100);
@@ -317,7 +318,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
                 val = newVal;
-                System.out.println("debug:"+val);
+                System.out.println("debug:" + val);
             }
         });
 
@@ -338,18 +339,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     mMeter = 0.0;
                     mRunList.clear();
                     f++;
-                    i=val;
+                    i = val;
                     //val = numberPicker.getValue();
                     // TODO: NumberPickerの廃止
                     mCloudLoggerAdapter.setCount(val);
                     startbtn.setText("STOP");
-                    Toast.makeText(getApplicationContext(),""+val, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "" + val, Toast.LENGTH_SHORT).show();
                 } else if (f == 1) {
                     stopChronometer();
                     mStop = true;
                     mStart = false;
                     // [i].stopRunning();
-                    f=0;
+                    f = 0;
                     i = 0;
                     mCloudLoggerAdapter.setCount(0);
                     val++;
@@ -362,14 +363,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
 
 
-        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE );
+        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
         for (int i = 0; i < 3; i++)
             save[i] = 0;
 
-        mSensorEventListener = new SensorEventListener()
-        {
-            public void onSensorChanged (SensorEvent event) {
+        mSensorEventListener = new SensorEventListener() {
+            public void onSensorChanged(SensorEvent event) {
                 // センサの取得値をそれぞれ保存しておく
 //                switch( event.sensor.getType()) {
 //                    case Sensor.TYPE_ACCELEROMETER:
@@ -422,13 +422,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //                    // 回転行列をoutRにかける
 //                    MatrixMultiply(outR, rot, 3, ininR);
 
-                    SensorManager.getOrientation(
-                            mSensorAdapter.getIninR(),
-                            fAttitude );
+                SensorManager.getOrientation(
+                        mSensorAdapter.getIninR(),
+                        fAttitude);
 
-                   SensorManager.getOrientation(
-                            mSensorAdapter.getOutR(),
-                            oridinalAttitude );
+                SensorManager.getOrientation(
+                        mSensorAdapter.getOutR(),
+                        oridinalAttitude);
 
 
 //                    String buf =
@@ -457,29 +457,31 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //                            String.format( "Pitch:\n\t%f\n", pitch);
 
 
-                    //TextView t = (TextView) findViewById( R.id.textview);
+                //TextView t = (TextView) findViewById( R.id.textview);
 //                    TextView Accell = (TextView) findViewById(R.id.textview1);
 //                    TextView Magnetic = (TextView) findViewById(R.id.textview2);
-                    //t.setText( buf );
+                //t.setText( buf );
 //                    Accell.setText(buf2);
 //                    Magnetic.setText(buf3);
-                    //float Yaw = fAttitude[0];
+                //float Yaw = fAttitude[0];
 
-                    // 正面に置く場合
-                    testView.setYaw(rad2deg( fAttitude[2] ));
-                    testView.setPitch(rad2deg( fAttitude[1] ));
+                // 正面に置く場合
+                testView.setYaw(rad2deg(fAttitude[2]));
+                testView.setPitch(rad2deg(fAttitude[1]));
 
 //                    // 左に置く場合
 //                    testView.Yaw = -rad2deg( fAttitude[1] );
 //                    testView.Pitch = rad2deg( fAttitude[2] );
 
 //                    System.out.println("testviewはok?");
-                    // 再描画
-                    testView.invalidate();
-                    directionView.setYaw(rad2deg(fAttitude[0]));
-                    directionView.invalidate();
+                // 再描画
+                testView.invalidate();
+                directionView.setYaw(rad2deg(fAttitude[0]));
+                directionView.invalidate();
             }
-            public void onAccuracyChanged (Sensor sensor, int accuracy) {}
+
+            public void onAccuracyChanged(Sensor sensor, int accuracy) {
+            }
         };
 
 
@@ -498,8 +500,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 return true; //trueの場合はonClickListenerを返さない？
             }
         });
-    }
 
+        soundPool = null;
+        AudioAttributes attr = new AudioAttributes.Builder()
+                .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                .build();
+
+        soundPool = new SoundPool.Builder()
+                .setAudioAttributes(attr)
+                .setMaxStreams(1)
+                .build();
+
+        sound = soundPool.load(this, R.raw.alert, 1);
+
+
+
+    }
 //    public void MatrixMultiply(float[] R, float[] L,int sizeR/*正方行列の次元*/, float[] outM) {
 //        for (int j=0; j<sizeR*sizeR; j++)
 //            outM[j] = 0;
@@ -885,7 +902,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onLocationChanged(Location location) {
         float[] dista = new float[3];
-
+        float a;//三角形の斜辺その1
+        float b;//三角形の斜辺その2
+        float c;//三角形の底辺
         // Stop後は動かさない
         if (mStop) {
             return;
@@ -954,7 +973,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         }
         //飛行禁止区域侵入時の警告音
-        alert1.Alert();
+        //Location.distanceBetween(,, latlng.latitude, latlng.longitude, dista);
+            soundPool.play(sound,1.0F, 1.0F, 0, -1, 1.0F);
     }
 
     private void drawTrace(LatLng latlng) {
