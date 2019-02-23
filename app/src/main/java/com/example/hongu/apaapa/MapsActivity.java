@@ -167,6 +167,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private float[] fAccell = null;
     private float[] fMagnetic = null;
 
+    Alert alert1 = new Alert();
 
     //SubThreadSample[] subThreadSample = new SubThreadSample[50];
 
@@ -952,6 +953,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             }
         }
+        //飛行禁止区域侵入時の警告音
+        alert1.Alert();
     }
 
     private void drawTrace(LatLng latlng) {

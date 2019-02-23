@@ -12,7 +12,7 @@ public class Alert extends AppCompatActivity {
     SoundPool soundPool;
     private int sound;
 
-    public void Alert {
+    public void Alert() {
         soundPool = null;
         AudioAttributes attr = new AudioAttributes.Builder()
                 .setUsage(AudioAttributes.USAGE_NOTIFICATION)
@@ -24,7 +24,7 @@ public class Alert extends AppCompatActivity {
                 .setMaxStreams(1)
                 .build();
 
-        sound = soundPool.load(this, R.sound.alert, 1);
+        sound = soundPool.load(this, R.raw.alert, 1);
 
         soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
             @Override
