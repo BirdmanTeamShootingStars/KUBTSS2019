@@ -172,13 +172,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private float[] fAccell = null;
     private float[] fMagnetic = null;
 
-    double[][] vertex = new double[][]{{34.701241, 135.529054}, {34.701024, 135.529406}};//飛行禁止区域との境界線を構成する多角形の頂点 {経度, 緯度}
-    int vertexes_ = 2;//頂点の数 >= 2
-    double a;
-    double b;
-    double c;
-    double height;
-    int stream;
+    private int stream;
 
     //SubThreadSample[] subThreadSample = new SubThreadSample[50];
 
@@ -930,6 +924,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onLocationChanged(Location location) {
         float[] dista = new float[3];
+        double[][] vertex = new double[][]{{34.701241, 135.529054}, {34.701024, 135.529406}};//飛行禁止区域との境界線を構成する多角形の頂点 {経度, 緯度}
+        int vertexes_ = 2;//頂点の数 >= 2
+        double a;
+        double b;
+        double c;
+        double height;
 
         // Stop後は動かさない
         if (mStop) {
