@@ -172,12 +172,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private float[] fAccell = null;
     private float[] fMagnetic = null;
 
-    double[][] vertex = new double[][]{{35.027171, 135.776975}, {35.026921, 135.778853}};//飛行禁止区域の頂点
-    int vertexes_ = 2;
+    double[][] vertex = new double[][]{{34.701241, 135.529054}, {34.701024, 135.529406}};//飛行禁止区域との境界線を構成する多角形の頂点 {経度, 緯度}
+    int vertexes_ = 2;//頂点の数 >= 2
     double a;
     double b;
     double c;
     double height;
+    int stream;
 
     //SubThreadSample[] subThreadSample = new SubThreadSample[50];
 
@@ -208,6 +209,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 //        mTextSensorViewThread.setPressureParam(atmStandard, atmLapse);
         Log.d(TAG, "onResume");
+
+        soundPool = null;
+        AudioAttributes attr = new AudioAttributes.Builder()
+                .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                .build();
+
+        soundPool = new SoundPool.Builder()
+                .setAudioAttributes(attr)
+                .setMaxStreams(1)
+                .build();
+
+        sound = soundPool.load(this, R.raw.alert, 1);
     }
 
     @Override
@@ -236,6 +250,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         super.onPause();
         sensorManager.unregisterListener(this);
 
+        if (soundPool != null) {
+            soundPool.release();
+        }
     }
 
     @Override
@@ -737,6 +754,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //            e.printStackTrace();
 //        }
         System.out.println("END");
+
+        if (soundPool != null) {
+            soundPool.release();
+        }
     }
 
 
@@ -912,6 +933,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         // Stop後は動かさない
         if (mStop) {
+            soundPool.stop(stream);
             return;
         }
 
@@ -976,20 +998,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 mMap.addCircle(currentCircle);
 
             }
-        }
-        //飛行禁止区域侵入時の警告音
-        for(int v = 2; v <= vertexes_; v++) {
-            Location.distanceBetween(vertex[v - 2][v - 2], vertex[v - 2][v - 1], latlng.latitude, latlng.longitude, dista);
-            a = dista[0];
-            Location.distanceBetween(vertex[v - 1][v - 2], vertex[v - 1][v - 1], latlng.latitude, latlng.longitude, dista);
-            b = dista[0];
-            Location.distanceBetween(vertex[v - 2][v - 2], vertex[v - 2][v - 1], vertex[v - 1][v - 2], vertex[v - 1][v - 1], dista);
-            c = dista[0];
-            height = 2 * Math.sqrt((a + b + c) * (a + b - c) * (a + c - b) * (b + c - a) / 16) / c;//ヘロンの公式
+            //飛行禁止区域侵入時の警告音
+            for (int ver = 2; ver <= vertexes_; ver++) {
+                Location.distanceBetween(vertex[ver - 2][ver - 2], vertex[ver - 2][ver - 1], latlng.latitude, latlng.longitude, dista);
+                a = dista[0];
+                Location.distanceBetween(vertex[ver - 1][ver - 2], vertex[ver - 1][ver - 1], latlng.latitude, latlng.longitude, dista);
+                b = dista[0];
+                Location.distanceBetween(vertex[ver - 2][ver - 2], vertex[ver - 2][ver - 1], vertex[ver - 1][ver - 2], vertex[ver - 1][ver - 1], dista);
+                c = dista[0];
 
-            if (height <= 5) {
-                soundPool.play(sound, 1.0F, 1.0F, 0, -1, 1.0F);
+                height = 2 * Math.sqrt((a + b + c) * (a + b - c) * (a + c - b) * (b + c - a) / 16) / c;//ヘロンの公式
+
+                if (height <= 5) {
+                    soundPool.play(sound, 1.0F, 1.0F, 0, -1, 1.0F);
+                    stream = soundPool.play(sound, 1.0F, 1.0F, 0, -1, 1.0F);
+                } else {
+                    soundPool.stop(stream);
+                }
             }
+
         }
     }
 
