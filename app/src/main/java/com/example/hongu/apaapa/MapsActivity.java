@@ -245,6 +245,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         sensorManager.unregisterListener(this);
 
         if (soundPool != null) {
+            soundPool.stop(stream);
             soundPool.release();
         }
     }
@@ -750,6 +751,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         System.out.println("END");
 
         if (soundPool != null) {
+            soundPool.stop(stream);
             soundPool.release();
         }
     }
