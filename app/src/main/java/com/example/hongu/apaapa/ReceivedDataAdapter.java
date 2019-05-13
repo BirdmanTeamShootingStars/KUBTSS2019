@@ -26,8 +26,8 @@ public class ReceivedDataAdapter {
 
     private Logger controllerLogger, sensor500Logger;
 
-    private double elevator, rudder, airspeed, cadence, ultsonic, atmpress;
-    private double cadencevolt,ultsonicvolt,servovolt;
+    private double elevator, rudder, airspeed, cadence, ultsonic, atmpress,altitude;
+    private double airspeedvolt,cadencevolt,ultsonicvolt,servovolt,altitudevolt;
     private int time, trim, Selector;
 
     private String[] dataString;
@@ -104,23 +104,23 @@ public class ReceivedDataAdapter {
                                 }
                                 if (!dataString[4].equals("N")) {
                                     //      sensor500Logger.appendData(System.currentTimeMillis() + "," + timeString + "," + dataString[5] + "," + dataString[6] + "," + dataString[7] + "," + dataString[8]);
-                                    airspeed = Double.parseDouble(dataString[4]);
-                                    atmpress = Double.parseDouble(dataString[7]);
+                                    servovolt = Double.parseDouble(dataString[4]);
+                                    cadence = Double.parseDouble(dataString[7]);
                                 }
                                 if(!dataString[5].equals("N")) {
-                                    cadence = Double.parseDouble(dataString[5]);
+                                    airspeed = Double.parseDouble(dataString[5]);
                                 }
                                 if(!dataString[6].equals("N")) {
-                                    ultsonic = Double.parseDouble(dataString[6]);
+                                    airspeedvolt = Double.parseDouble(dataString[6]);
                                 }
                                 if(!dataString[8].equals("N")) {
                                     cadencevolt = Double.parseDouble(dataString[8]);
                                 }
                                 if(!dataString[9].equals("N")) {
-                                    ultsonicvolt = Double.parseDouble(dataString[9]);
+                                    altitude = Double.parseDouble(dataString[9]);
                                 }
                                 if(!dataString[10].equals("N")) {
-                                    servovolt = Double.parseDouble(dataString[10]);
+                                    altitudevolt = Double.parseDouble(dataString[10]);
                                 }
                                 controllerLogger.appendData(System.currentTimeMillis() + "," + timeString + "," + dataString[1] + "," + dataString[2]);
                                 sensor500Logger.appendData(System.currentTimeMillis() + "," + timeString + "," +dataString[4]+","+ dataString[5]+","+dataString[6]+","+dataString[7]+","+dataString[8]
@@ -170,10 +170,13 @@ public class ReceivedDataAdapter {
     public int    getTrim(){return trim;}
     public double getAirspeed(){return airspeed;}
     public double getCadence(){return cadence;}
+    public double getAltitude(){return altitude;}
     public double getUltsonic(){return ultsonic;}
     public double getAtmpress(){return atmpress;}
     public int    getSelector(){return Selector;}
+    public double getAirspeedvolt(){return airspeedvolt;}
     public double getCadencevolt(){return cadencevolt;}
+    public double getAltitudevolt(){return altitudevolt;}
     public double getUltsonicvolt(){return ultsonicvolt;}
     public double getServovolt(){return servovolt;}
 

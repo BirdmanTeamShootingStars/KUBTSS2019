@@ -579,7 +579,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         private TextView txtStatus, txtSelector;
         GraphView speed = (GraphView) findViewById(R.id.speed);
         GraphView rpm = (GraphView) findViewById(R.id.rpm);
-        GraphView ult = (GraphView) findViewById(R.id.ult);
+        GraphView alt = (GraphView) findViewById(R.id.alt);
         TextView elevator = (TextView) findViewById(R.id.elevator);
         TextView rudder = (TextView) findViewById(R.id.rudder);
         TextView trim = (TextView) findViewById(R.id.trim);
@@ -626,10 +626,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                         speed.setV(mReceivedDataAdapter.getAirspeed());
                         rpm.setV(mReceivedDataAdapter.getCadence());
-                        ult.setV(mReceivedDataAdapter.getUltsonic());
+                        alt.setV(mReceivedDataAdapter.getAltitude());
+                       // ult.setV(mReceivedDataAdapter.getUltsonic());
                         speed.invalidate();
                         rpm.invalidate();
-                        ult.invalidate();
+                        alt.invalidate();
+                        //ult.invalidate();
 
                         elevator.setText("Elev: " + String.format("%.2f", mReceivedDataAdapter.getElevator()));//水平サーボの舵角
                         rudder.setText("Rud: " +String.format("%.2f", mReceivedDataAdapter.getRudder()));//垂直サーボの舵角
@@ -639,8 +641,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //                〇        txtCadence.setText(String.format("%.2f", mReceivedDataAdapter.getCadence()) + "RPM");//足元回転数
 //                〇        txtUltsonic.setText(String.format("%.2f", mReceivedDataAdapter.getUltsonic()));//超音波(200cmまで)
 //                        txtAtmpress.setText(String.format("%.2f", mReceivedDataAdapter.getAtmpress()));//気圧(hPa)
-                        double altitude = -(mReceivedDataAdapter.getAtmpress() - atmStandard) / atmLapse;
-//                        txtAltitude.setText(String.format("%.2f", altitude));
+                        //double altitude = mReceivedDataAdapter.getAltitude();
+                                //-(mReceivedDataAdapter.getAtmpress() - atmStandard) / atmLapse;
+//                            txtAltitude.setText(String.format("%.2f", altitude));
                         switch (mReceivedDataAdapter.getState()) {
                             case BluetoothChatService.STATE_CONNECTED:
                                 txtStatus.setText("Connected");

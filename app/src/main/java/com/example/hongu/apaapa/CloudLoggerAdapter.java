@@ -86,6 +86,7 @@ public class CloudLoggerAdapter{
                             data.add(String.valueOf(mReceivedDataAdapter.getUltsonic()));//超音波(cm)200cmくらいまでの精度
                             data.add(String.valueOf(mReceivedDataAdapter.getAtmpress()));//hPa
                             data.add(String.valueOf(mReceivedDataAdapter.getSelector()));
+                            data.add(String.valueOf(mReceivedDataAdapter.getAirspeedvolt()));
                             data.add(String.valueOf(mReceivedDataAdapter.getCadencevolt()));
                             data.add(String.valueOf(mReceivedDataAdapter.getUltsonicvolt()));
                             data.add(String.valueOf(mReceivedDataAdapter.getServovolt()));

@@ -151,13 +151,13 @@
                     sample:y0="100"></com.example.hongu.apaapa.GraphView>
 
                 <com.example.hongu.apaapa.GraphView
-                    android:id="@+id/ult"
+                    android:id="@+id/alt"
                     class="com.example.hongu.apaapa.GraphView"
                     android:layout_width="83dp"
                     android:layout_height="67dp"
                     android:layout_alignParentTop="true"
                     android:layout_centerHorizontal="true"
-                    sample:title="Ultsonic"
+                    sample:title="Altitude"
                     sample:type="0"
                     sample:unit="cm"
                     sample:vmax="20"
