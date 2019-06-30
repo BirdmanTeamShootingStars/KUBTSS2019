@@ -105,13 +105,15 @@ public class ReceivedDataAdapter {
                                 if (!dataString[4].equals("N")) {
                                     //      sensor500Logger.appendData(System.currentTimeMillis() + "," + timeString + "," + dataString[5] + "," + dataString[6] + "," + dataString[7] + "," + dataString[8]);
                                     servovolt = Double.parseDouble(dataString[4]);
-                                    cadence = Double.parseDouble(dataString[7]);
                                 }
                                 if(!dataString[5].equals("N")) {
                                     airspeed = Double.parseDouble(dataString[5]);
                                 }
                                 if(!dataString[6].equals("N")) {
                                     airspeedvolt = Double.parseDouble(dataString[6]);
+                                }
+                                if(!dataString[7].equals("N")) {
+                                    cadence = Double.parseDouble(dataString[7]);
                                 }
                                 if(!dataString[8].equals("N")) {
                                     cadencevolt = Double.parseDouble(dataString[8]);
