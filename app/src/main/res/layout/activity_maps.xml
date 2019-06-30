@@ -142,7 +142,7 @@
                     android:layout_height="67dp"
                     android:layout_alignParentTop="true"
                     android:layout_centerHorizontal="true"
-                    sample:title="Cadence"
+                    sample:title="回転数"
                     sample:type="0"
                     sample:unit="RPM"
                     sample:vmax="150"
@@ -151,13 +151,13 @@
                     sample:y0="100"></com.example.hongu.apaapa.GraphView>
 
                 <com.example.hongu.apaapa.GraphView
-                    android:id="@+id/ult"
+                    android:id="@+id/alt"
                     class="com.example.hongu.apaapa.GraphView"
                     android:layout_width="83dp"
                     android:layout_height="67dp"
                     android:layout_alignParentTop="true"
                     android:layout_centerHorizontal="true"
-                    sample:title="Ultsonic"
+                    sample:title="高度"
                     sample:type="0"
                     sample:unit="cm"
                     sample:vmax="20"
@@ -187,7 +187,7 @@
                     android:layout_height="67dp"
                     android:layout_alignParentTop="true"
                     android:layout_centerHorizontal="true"
-                    sample:title="機速"
+                    sample:title="風速"
                     sample:type="1"
                     sample:unit="m/s"
                     sample:vmax="100"
