@@ -133,7 +133,9 @@ public class ReceivedDataAdapter {
                         }
                         recDataString.delete(0, recDataString.indexOf("\r") + 1);
                     }
-
+                    for(int i=0;i < 10;i++){
+                        dataString[i] = "N";
+                    }
                     break;
                 case Constants.MESSAGE_DEVICE_NAME:
                     // save the connected device's name

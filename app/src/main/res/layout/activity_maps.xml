@@ -158,7 +158,7 @@
                     android:layout_alignParentTop="true"
                     android:layout_centerHorizontal="true"
                     sample:title="高度"
-                    sample:type="1"
+                    sample:type="0"
                     sample:unit="cm"
                     sample:vmax="20"
                     sample:vmin="0"
