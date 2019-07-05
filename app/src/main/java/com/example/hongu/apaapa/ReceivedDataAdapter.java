@@ -19,8 +19,7 @@ public class ReceivedDataAdapter {
     private BluetoothDevice device;
     private ReConnectThread mReConnectThread;
 
-   // final private static String ADDRESS = "00:06:66:6C:56:9E";// Bluetoothモジュールの MAC address
-    final private static String ADDRESS = "00:06:66:80:C5:42";// Bluetoothモジュールの MAC address
+    final private static String ADDRESS = "00:06:66:6E:33:18";// Bluetoothモジュールの MAC address
 
     boolean connectButton = true;
 
@@ -134,7 +133,9 @@ public class ReceivedDataAdapter {
                         }
                         recDataString.delete(0, recDataString.indexOf("\r") + 1);
                     }
-
+                    for(int i=0;i < 10;i++){
+                        dataString[i] = "N";
+                    }
                     break;
                 case Constants.MESSAGE_DEVICE_NAME:
                     // save the connected device's name
